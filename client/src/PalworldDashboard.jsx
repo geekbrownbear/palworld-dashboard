@@ -197,7 +197,6 @@ export default function PalworldDashboard() {
 				  <li key={p.userId || idx} className="border p-2 rounded bg-gray-50">
 					<div className="font-semibold text-lg">{p.name} {p.level ? `(Level ${p.level})` : null}</div>
 					<div className="text-sm text-gray-700">Account: {p.accountName}</div>
-					/*<div className="text-sm text-gray-700">User ID: {p.userId} | Player ID: {p.playerId}</div>*/
 					<div className="text-sm text-gray-700">IP: {p.ip} | Ping: {p.ping.toFixed(2)}ms</div>
 					<div className="text-sm text-gray-700">Location: ({p.location_x}, {p.location_y})</div>
 					<div className="text-sm text-gray-700">Buildings Owned: {p.building_count}</div>
