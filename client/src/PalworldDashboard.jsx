@@ -20,7 +20,7 @@ const Button = ({ children, ...props }) => (
 );
 const Input = (props) => <input className="border p-2 rounded w-full" {...props} />;
 
-const API_BASE = "/v1/api";
+const API_BASE = "/api";
 
 export default function PalworldDashboard() {
   const [info, setInfo] = useState(null);
