@@ -1,7 +1,3 @@
-app.use((req, res, next) => {
-  console.log(`[${req.method}] ${req.originalUrl}`);
-  next();
-});
 const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
@@ -10,6 +6,11 @@ const app = express();
 const PORT = 3001;
 const API_BASE = process.env.PALWORLD_API; // expected to be http://<ip>:8212/v1/api
 const AUTH = process.env.PALWORLD_AUTH;
+
+app.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.originalUrl}`);
+  next();
+});
 
 app.use(bodyParser.json());
 
