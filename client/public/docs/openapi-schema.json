@@ -1,0 +1,65 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Palworld API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/info": {
+      "get": {
+        "summary": "Get server info",
+        "responses": {
+          "200": {
+            "description": "Server info"
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "summary": "Get server metrics",
+        "responses": {
+          "200": {
+            "description": "Server metrics"
+          }
+        }
+      }
+    },
+    "/players": {
+      "get": {
+        "summary": "Get player list",
+        "responses": {
+          "200": {
+            "description": "List of players"
+          }
+        }
+      }
+    },
+    "/announce": {
+      "post": {
+        "summary": "Send announcement",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                },
+                "required": ["message"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Announcement sent"
+          }
+        }
+      }
+    }
+  }
+}
