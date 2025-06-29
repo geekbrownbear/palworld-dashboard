@@ -1,0 +1,819 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "PalWorld OpenAPI",
+    "description": "PalWorld OpenAPI(Swagger) specification",
+    "termsOfService": "https://github.com/fa0311",
+    "contact": {
+      "email": "yuki@yuki0311.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/fa0311/palworld-openapi#license"
+    },
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8212"
+    }
+  ],
+  "paths": {
+    "/v1/api/info": {
+      "get": {
+        "summary": "Get server information",
+        "operationId": "getInfo",
+        "tags": [
+          "info"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/api/players": {
+      "get": {
+        "summary": "Get all players",
+        "operationId": "getPlayers",
+        "tags": [
+          "info"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayersResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/api/settings": {
+      "get": {
+        "summary": "Get the server settings",
+        "operationId": "getSettings",
+        "tags": [
+          "info"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettingsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/api/metrics": {
+      "get": {
+        "summary": "Get the server metrics",
+        "operationId": "getMetrics",
+        "tags": [
+          "info"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/api/announce": {
+      "post": {
+        "summary": "Announce message to all players",
+        "operationId": "postAnnounce",
+        "tags": [
+          "action"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnnounceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/api/kick": {
+      "post": {
+        "summary": "Kick player",
+        "operationId": "postKick",
+        "tags": [
+          "action"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KickRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/api/ban": {
+      "post": {
+        "summary": "Ban player",
+        "operationId": "postBan",
+        "tags": [
+          "action"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BanRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/api/unban": {
+      "post": {
+        "summary": "Unban player",
+        "operationId": "postUnban",
+        "tags": [
+          "action"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnbanRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/api/save": {
+      "post": {
+        "summary": "Save the world",
+        "operationId": "postSave",
+        "tags": [
+          "action"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/api/shutdown": {
+      "post": {
+        "summary": "Shutdown the server",
+        "operationId": "postShutdown",
+        "tags": [
+          "action"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShutdownRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/api/stop": {
+      "post": {
+        "summary": "Force stop the server",
+        "operationId": "postStop",
+        "tags": [
+          "action"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "InfoResponse": {
+        "type": "object",
+        "required": [
+          "version",
+          "servername",
+          "description"
+        ],
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "servername": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "PlayersResponse": {
+        "type": "object",
+        "required": [
+          "players"
+        ],
+        "properties": {
+          "players": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Player"
+            }
+          }
+        }
+      },
+      "SettingsResponse": {
+        "type": "object",
+        "required": [
+          "Difficulty",
+          "DayTimeSpeedRate",
+          "NightTimeSpeedRate",
+          "ExpRate",
+          "PalCaptureRate",
+          "PalSpawnNumRate",
+          "PalDamageRateAttack",
+          "PalDamageRateDefense",
+          "PlayerDamageRateAttack",
+          "PlayerDamageRateDefense",
+          "PlayerStomachDecreaceRate",
+          "PlayerStaminaDecreaceRate",
+          "PlayerAutoHPRegeneRate",
+          "PlayerAutoHpRegeneRateInSleep",
+          "PalStomachDecreaceRate",
+          "PalStaminaDecreaceRate",
+          "PalAutoHPRegeneRate",
+          "PalAutoHpRegeneRateInSleep",
+          "BuildObjectDamageRate",
+          "BuildObjectDeteriorationDamageRate",
+          "CollectionDropRate",
+          "CollectionObjectHpRate",
+          "CollectionObjectRespawnSpeedRate",
+          "EnemyDropItemRate",
+          "DeathPenalty",
+          "bEnablePlayerToPlayerDamage",
+          "bEnableFriendlyFire",
+          "bEnableInvaderEnemy",
+          "bActiveUNKO",
+          "bEnableAimAssistPad",
+          "bEnableAimAssistKeyboard",
+          "DropItemMaxNum",
+          "DropItemMaxNum_UNKO",
+          "BaseCampMaxNum",
+          "BaseCampWorkerMaxNum",
+          "DropItemAliveMaxHours",
+          "bAutoResetGuildNoOnlinePlayers",
+          "AutoResetGuildTimeNoOnlinePlayers",
+          "GuildPlayerMaxNum",
+          "PalEggDefaultHatchingTime",
+          "WorkSpeedRate",
+          "bIsMultiplay",
+          "bIsPvP",
+          "bCanPickupOtherGuildDeathPenaltyDrop",
+          "bEnableNonLoginPenalty",
+          "bEnableFastTravel",
+          "bIsStartLocationSelectByMap",
+          "bExistPlayerAfterLogout",
+          "bEnableDefenseOtherGuildPlayer",
+          "CoopPlayerMaxNum",
+          "ServerPlayerMaxNum",
+          "ServerName",
+          "ServerDescription",
+          "PublicPort",
+          "PublicIP",
+          "RCONEnabled",
+          "RCONPort",
+          "Region",
+          "bUseAuth",
+          "BanListURL",
+          "RESTAPIEnabled",
+          "RESTAPIPort",
+          "bShowPlayerList",
+          "AllowConnectPlatform",
+          "bIsUseBackupSaveData",
+          "LogFormatType"
+        ],
+        "properties": {
+          "Difficulty": {
+            "type": "string"
+          },
+          "DayTimeSpeedRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "NightTimeSpeedRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "ExpRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "PalCaptureRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "PalSpawnNumRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "PalDamageRateAttack": {
+            "type": "number",
+            "format": "double"
+          },
+          "PalDamageRateDefense": {
+            "type": "number",
+            "format": "double"
+          },
+          "PlayerDamageRateAttack": {
+            "type": "number",
+            "format": "double"
+          },
+          "PlayerDamageRateDefense": {
+            "type": "number",
+            "format": "double"
+          },
+          "PlayerStomachDecreaceRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "PlayerStaminaDecreaceRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "PlayerAutoHPRegeneRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "PlayerAutoHpRegeneRateInSleep": {
+            "type": "number",
+            "format": "double"
+          },
+          "PalStomachDecreaceRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "PalStaminaDecreaceRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "PalAutoHPRegeneRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "PalAutoHpRegeneRateInSleep": {
+            "type": "number",
+            "format": "double"
+          },
+          "BuildObjectDamageRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "BuildObjectDeteriorationDamageRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "CollectionDropRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "CollectionObjectHpRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "CollectionObjectRespawnSpeedRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "EnemyDropItemRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "DeathPenalty": {
+            "type": "string"
+          },
+          "bEnablePlayerToPlayerDamage": {
+            "type": "boolean"
+          },
+          "bEnableFriendlyFire": {
+            "type": "boolean"
+          },
+          "bEnableInvaderEnemy": {
+            "type": "boolean"
+          },
+          "bActiveUNKO": {
+            "type": "boolean"
+          },
+          "bEnableAimAssistPad": {
+            "type": "boolean"
+          },
+          "bEnableAimAssistKeyboard": {
+            "type": "boolean"
+          },
+          "DropItemMaxNum": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "DropItemMaxNum_UNKO": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "BaseCampMaxNum": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "BaseCampWorkerMaxNum": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "DropItemAliveMaxHours": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bAutoResetGuildNoOnlinePlayers": {
+            "type": "boolean"
+          },
+          "AutoResetGuildTimeNoOnlinePlayers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "GuildPlayerMaxNum": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PalEggDefaultHatchingTime": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WorkSpeedRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "bIsMultiplay": {
+            "type": "boolean"
+          },
+          "bIsPvP": {
+            "type": "boolean"
+          },
+          "bCanPickupOtherGuildDeathPenaltyDrop": {
+            "type": "boolean"
+          },
+          "bEnableNonLoginPenalty": {
+            "type": "boolean"
+          },
+          "bEnableFastTravel": {
+            "type": "boolean"
+          },
+          "bIsStartLocationSelectByMap": {
+            "type": "boolean"
+          },
+          "bExistPlayerAfterLogout": {
+            "type": "boolean"
+          },
+          "bEnableDefenseOtherGuildPlayer": {
+            "type": "boolean"
+          },
+          "CoopPlayerMaxNum": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ServerPlayerMaxNum": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ServerName": {
+            "type": "string"
+          },
+          "ServerDescription": {
+            "type": "string"
+          },
+          "PublicPort": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PublicIP": {
+            "type": "string"
+          },
+          "RCONEnabled": {
+            "type": "boolean"
+          },
+          "RCONPort": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Region": {
+            "type": "string"
+          },
+          "bUseAuth": {
+            "type": "boolean"
+          },
+          "BanListURL": {
+            "type": "string"
+          },
+          "RESTAPIEnabled": {
+            "type": "boolean"
+          },
+          "RESTAPIPort": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bShowPlayerList": {
+            "type": "boolean"
+          },
+          "AllowConnectPlatform": {
+            "type": "string"
+          },
+          "bIsUseBackupSaveData": {
+            "type": "boolean"
+          },
+          "LogFormatType": {
+            "type": "string"
+          }
+        }
+      },
+      "MetricsResponse": {
+        "type": "object",
+        "required": [
+          "serverfps",
+          "currentplayernum",
+          "serverframetime",
+          "maxplayernum",
+          "uptime"
+        ],
+        "properties": {
+          "serverfps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currentplayernum": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serverframetime": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxplayernum": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "uptime": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "AnnounceRequest": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "KickRequest": {
+        "type": "object",
+        "required": [
+          "userId"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "BanRequest": {
+        "type": "object",
+        "required": [
+          "userId"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "UnbanRequest": {
+        "type": "object",
+        "required": [
+          "userId"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string"
+          }
+        }
+      },
+      "ShutdownRequest": {
+        "type": "object",
+        "required": [
+          "waittime"
+        ],
+        "properties": {
+          "waittime": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "Player": {
+        "type": "object",
+        "required": [
+          "name",
+          "playerId",
+          "userId",
+          "ip",
+          "ping",
+          "location_x",
+          "location_y",
+          "level"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "playerId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "ip": {
+            "type": "string"
+          },
+          "ping": {
+            "type": "number",
+            "format": "double"
+          },
+          "location_x": {
+            "type": "number",
+            "format": "double"
+          },
+          "location_y": {
+            "type": "number",
+            "format": "double"
+          },
+          "level": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "responses": {},
+    "parameters": {},
+    "examples": {},
+    "requestBodies": {},
+    "headers": {},
+    "links": {},
+    "callbacks": {}
+  },
+  "security": [
+    {
+      "BasicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "info",
+      "description": "Server information"
+    },
+    {
+      "name": "action",
+      "description": "action operations"
+    }
+  ]
+}
