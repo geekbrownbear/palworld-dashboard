@@ -23,6 +23,14 @@ export default function PalworldDashboard() {
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [health, setHealth] = useState("unknown");
 
+  const formatUptime = (seconds) => {
+    const d = Math.floor(seconds / 86400);
+    const h = Math.floor((seconds % 86400) / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${d.toString().padStart(2, '0')}:${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
+
   const fetchData = async () => {
     try {
       const [infoRes, metricsRes, playersRes, healthRes] = await Promise.all([
@@ -132,10 +140,11 @@ export default function PalworldDashboard() {
             <h2 className="text-xl font-bold mb-2">Metrics</h2>
             {metrics ? (
               <ul>
-                <li><strong>FPS:</strong> {metrics.serverfps}</li>
+                <li><strong>Server FPS:</strong> {metrics.serverfps}</li>
                 <li><strong>Players:</strong> {metrics.currentplayernum}/{metrics.maxplayernum}</li>
-                <li><strong>Uptime:</strong> {metrics.uptime}s</li>
-                <li><strong>Frame Time:</strong> {metrics.serverframetime}ms</li>
+                <li><strong>Uptime:</strong> {metrics.uptime} seconds ({formatUptime(metrics.uptime)})</li>
+                <li><strong>Frame Time:</strong> {metrics.serverframetime.toFixed(2)}ms</li>
+                <li><strong>In-game Days:</strong> {metrics.days}</li>
               </ul>
             ) : (
               <p className="text-gray-500">No metrics available.</p>
