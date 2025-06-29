@@ -116,7 +116,7 @@ export default function PalworldDashboard() {
     fetchData();
     let interval;
     if (autoRefresh) {
-      interval = setInterval(fetchData, 30000);
+      interval = setInterval(fetchData, 10000);
     }
     return () => clearInterval(interval);
   }, [autoRefresh]);
