@@ -194,10 +194,15 @@ export default function PalworldDashboard() {
             {players.length > 0 ? (
               <ul className="space-y-1">
                 {players.map((p, idx) => (
-                  <li key={p.userId || idx} className="border p-2 rounded">
-                    <strong>{p.name}</strong> {p.level ? `(Level ${p.level})` : null} - {p.ip} - {p.ping}ms
-                  </li>
-                ))}
+				  <li key={p.userId || idx} className="border p-2 rounded bg-gray-50">
+					<div className="font-semibold text-lg">{p.name} {p.level ? `(Level ${p.level})` : null}</div>
+					<div className="text-sm text-gray-700">Account: {p.accountName}</div>
+					<div className="text-sm text-gray-700">User ID: {p.userId} | Player ID: {p.playerId}</div>
+					<div className="text-sm text-gray-700">IP: {p.ip} | Ping: {p.ping}ms</div>
+					<div className="text-sm text-gray-700">Location: ({p.location_x}, {p.location_y})</div>
+					<div className="text-sm text-gray-700">Buildings Owned: {p.building_count}</div>
+				  </li>
+				))}
               </ul>
             ) : (
               <p className="text-gray-500">No players online or data not available.</p>
