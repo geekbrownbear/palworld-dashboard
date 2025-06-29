@@ -19,13 +19,14 @@ app.use('/api/:endpoint', async (req, res) => {
         'Authorization': AUTH,
         'Content-Type': 'application/json'
       },
-      body: req.method === 'POST' ? JSON.stringify(req.body) : undefined
+      body: ['POST', 'PUT', 'PATCH'].includes(req.method) ? JSON.stringify(req.body) : undefined
     });
     const data = await response.json();
     res.status(response.status).json(data);
   } catch (err) {
+    console.error(`[Proxy Error] ${err.message}`);
     res.status(500).json({ error: err.message });
   }
 });
 
-app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Palworld proxy backend listening on port ${PORT}`));
