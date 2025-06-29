@@ -129,6 +129,9 @@ export default function PalworldDashboard() {
 
   return (
     <div className="flex flex-col gap-8 p-4">
+      <h1 className="text-3xl font-bold text-center text-gray-800">Palworld Server Dashboard</h1>
+
+    <div className="flex flex-col gap-8 p-4">
       <div className="flex flex-col md:flex-row justify-between items-center gap-2">
         <div className="text-sm text-gray-600">
           <span>Last Updated: {lastUpdated || "never"}</span>
