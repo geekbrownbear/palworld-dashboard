@@ -33,19 +33,25 @@ const proxyGet = (path) => async (req, res) => {
 };
 
 const proxyPost = (path) => async (req, res) => {
+  const url = `${API_BASE}${path}`;
   try {
-    const r = await fetch(`${API_BASE}${path}`, {
-      method: 'POST',
-      headers: {
-        'Authorization': AUTH,
-        'Content-Type': 'application/json'
-      },
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { Authorization: AUTH, "Content-Type": "application/json" },
       body: JSON.stringify(req.body)
     });
-    const data = await r.json();
-    res.status(r.status).json(data);
+
+    const text = await response.text();
+    let data;
+    try {
+      data = text ? JSON.parse(text) : { status: "ok" };
+    } catch {
+      data = { status: "ok" };
+    }
+
+    res.status(response.status).json(data);
   } catch (err) {
-    console.error(`[POST ${path}] Error:`, err);
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 };
