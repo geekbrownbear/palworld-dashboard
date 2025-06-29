@@ -242,7 +242,15 @@ export default function PalworldDashboard() {
         <CardContent>
           <h2 className="text-xl font-bold mb-4">API Explorer (Swagger UI)</h2>
           <div className="border rounded overflow-hidden">
-            <SwaggerUI url="/docs/openapi-schema.json" />
+            <SwaggerUI url="/docs/openapi-schema.json"
+			  requestInterceptor={(req) => {
+				// Prepend /api to every request if not already present
+				if (!req.url.startsWith("/api")) {
+				  req.url = "/api" + req.url;
+				}
+				return req;
+			  }}
+			/>
           </div>
         </CardContent>
       </Card>
