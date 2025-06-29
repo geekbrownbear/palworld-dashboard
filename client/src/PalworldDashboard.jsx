@@ -242,7 +242,7 @@ export default function PalworldDashboard() {
 		  <CardContent>
 			<h2 className="text-xl font-bold mb-4">API Explorer</h2>
 			<SwaggerUI
-			  url="/openapi-schema.json"
+			  url="/docs/openapi-schema.json"
 			  docExpansion="none"
 			  requestInterceptor={(req) => {
 				if (!req.url.startsWith("/api")) {
