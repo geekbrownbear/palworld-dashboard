@@ -1,3 +1,7 @@
+app.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.originalUrl}`);
+  next();
+});
 const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
