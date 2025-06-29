@@ -97,15 +97,21 @@ export default function PalworldDashboard() {
         body: JSON.stringify({ message })
       });
 
-      if (!res.ok) {
-        const errText = await res.text();
-        console.error("Announce failed:", errText);
-        setError("Announcement failed: " + errText);
-      } else {
-        console.log("Announcement sent successfully.");
-        setMessage("");
-        setError(null);
-      }
+	  if (!res.ok) {
+		let errText;
+		try {
+			errText = await res.text();
+		} catch {
+			errText = `HTTP ${res.status}`;
+		}
+		console.error("Announce failed:", errText);
+		setError("Announcement failed: " + errText);
+	  } else {
+		console.log("Announcement sent successfully.");
+		setMessage("");
+		setError(null);
+	}
+
     } catch (err) {
       console.error("Announce error:", err);
       setError("Announcement error: " + err.message);
