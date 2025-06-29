@@ -4,6 +4,11 @@
     "title": "Palworld API",
     "version": "1.0.0"
   },
+  "servers": [
+  {
+    "url": "http://172.26.7.56:8212/v1/api"
+  }
+],
   "paths": {
     "/info": {
       "get": {
