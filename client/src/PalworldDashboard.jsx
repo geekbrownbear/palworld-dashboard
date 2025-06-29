@@ -19,26 +19,30 @@ export default function PalworldDashboard() {
   const [players, setPlayers] = useState([]);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
+  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [health, setHealth] = useState("unknown");
 
   const fetchData = async () => {
     try {
-      const [infoRes, metricsRes, playersRes] = await Promise.all([
+      const [infoRes, metricsRes, playersRes, healthRes] = await Promise.all([
         fetch(`${API_BASE}/info`),
         fetch(`${API_BASE}/metrics`),
-        fetch(`${API_BASE}/players`)
+        fetch(`${API_BASE}/players`),
+        fetch(`${API_BASE}/health`)
       ]);
 
       const infoData = await infoRes.json();
       const metricsData = await metricsRes.json();
       const playersData = await playersRes.json();
-
-      console.log("Info:", infoData);
-      console.log("Metrics:", metricsData);
-      console.log("Players:", playersData);
+      const healthData = await healthRes.json();
 
       setInfo(infoData);
       setMetrics(metricsData);
       setPlayers(Array.isArray(playersData) ? playersData : playersData.players || []);
+      setHealth(healthData?.status || "unhealthy");
+      setLastUpdated(new Date().toLocaleTimeString());
+      setError(null);
     } catch (err) {
       console.error("Failed to fetch data:", err);
       setError("Unable to fetch one or more data sources.");
@@ -72,12 +76,35 @@ export default function PalworldDashboard() {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 10000);
+    let interval;
+    if (autoRefresh) {
+      interval = setInterval(fetchData, 30000);
+    }
     return () => clearInterval(interval);
-  }, []);
+  }, [autoRefresh]);
 
   return (
     <div className="flex flex-col gap-8 p-4">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-2">
+        <div className="text-sm text-gray-600">
+          <span>Last Updated: {lastUpdated || "never"}</span>
+          <span className={`ml-4 px-2 py-1 rounded text-white text-xs ${health === 'ok' ? 'bg-green-600' : 'bg-red-600'}`}>
+            API Status: {health}
+          </span>
+        </div>
+        <div className="flex gap-2">
+          <Button onClick={fetchData}>🔄 Manual Refresh</Button>
+          <label className="text-sm flex items-center gap-1">
+            <input
+              type="checkbox"
+              checked={autoRefresh}
+              onChange={() => setAutoRefresh(!autoRefresh)}
+            />
+            Auto-refresh
+          </label>
+        </div>
+      </div>
+
       {error && (
         <div className="bg-red-100 text-red-800 p-4 rounded border border-red-300">
           <strong>Error:</strong> {error}
