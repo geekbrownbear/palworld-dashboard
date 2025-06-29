@@ -1,0 +1,2 @@
+# palworld-dashboard
+
