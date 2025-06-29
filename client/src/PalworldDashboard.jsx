@@ -102,14 +102,19 @@ export default function PalworldDashboard() {
       });
 
       if (!res.ok) {
-        const errText = await res.text();
-        console.error("Announce failed:", errText);
-        setError("Announcement failed: " + errText);
-      } else {
-        console.log("Announcement sent successfully.");
-        setMessage("");
-        setError(null);
-      }
+		  let errText;
+		  try {
+			errText = await res.text();
+		  } catch {
+			errText = `HTTP ${res.status}`;
+		  }
+		  console.error("Announce failed:", errText);
+		  setError("Announcement failed: " + errText);
+		} else {
+		  console.log("Announcement sent successfully.");
+		  setMessage("");
+		  setError(null);
+		}
     } catch (err) {
       console.error("Announce error:", err);
       setError("Announcement error: " + err.message);
@@ -176,7 +181,7 @@ export default function PalworldDashboard() {
               <ul>
                 <li><strong>Server FPS:</strong> <span className={metrics.serverfps < 30 ? "text-red-600" : "text-green-700"}>{metrics.serverfps}</span> (avg: {averages.fps})</li>
                 <li><strong>Players:</strong> {metrics.currentplayernum}/{metrics.maxplayernum} (avg: {averages.players})</li>
-                <li><strong>Uptime:</strong> {metrics.uptime} seconds ({formatUptime(metrics.uptime)})</li>
+                <li><strong>Uptime:</strong> {formatUptime(metrics.uptime)} (DD:HH:MM:SS)</li>
                 <li><strong>Frame Time:</strong> <span className={metrics.serverframetime > 25 ? "text-yellow-600" : "text-black"}>{metrics.serverframetime.toFixed(2)}ms</span></li>
                 <li><strong>In-game Days:</strong> {metrics.days}</li>
               </ul>
