@@ -1,56 +1,59 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const fetch = require('node-fetch');
-const dotenv = require('dotenv');
+require('dotenv').config();
+console.log('[DEBUG] PALWORLD_API:', process.env.PALWORLD_API);
+console.log('[DEBUG] PALWORLD_AUTH:', process.env.PALWORLD_AUTH);
 
-dotenv.config();
 
 const app = express();
 const PORT = 3001;
-const API_BASE = process.env.PALWORLD_API;
+const API_BASE = process.env.PALWORLD_API; // expected to be http://<ip>:8212/v1/api
 const AUTH = process.env.PALWORLD_AUTH;
 
-console.log('[DEBUG] PALWORLD_API:', API_BASE);
-console.log('[DEBUG] PALWORLD_AUTH:', AUTH);
+app.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.originalUrl}`);
+  next();
+});
 
 app.use(bodyParser.json());
 
-app.use('/api/*', async (req, res) => {
-  const endpointPath = req.originalUrl.replace('/api/', '');
-  const url = `${API_BASE}/${endpointPath}`;
-
-  const headers = {
-    Authorization: AUTH
-  };
-  if (['POST', 'PUT', 'PATCH'].includes(req.method)) {
-    headers['Content-Type'] = 'application/json';
-  }
-
-  console.log(`[Proxy] ${req.method} → ${url}`);
-
+const proxyGet = (path) => async (req, res) => {
   try {
-    const response = await fetch(url, {
-      method: req.method,
-      headers,
-      body: ['POST', 'PUT', 'PATCH'].includes(req.method)
-        ? JSON.stringify(req.body)
-        : undefined
+    const r = await fetch(`${API_BASE}${path}`, {
+      headers: {
+        'Authorization': AUTH,
+        'Accept': 'application/json'
+      }
     });
-
-    const contentType = response.headers.get('content-type');
-    const responseData = contentType?.includes('application/json')
-      ? await response.json()
-      : await response.text();
-
-    console.log(`[Proxy] ← ${response.status} ${url}`);
-
-    res.status(response.status).send(responseData);
+    const data = await r.json();
+    res.status(r.status).json(data);
   } catch (err) {
-    console.error(`[Proxy Error] ${err.message}`);
+    console.error(`[GET ${path}] Error:`, err);
     res.status(500).json({ error: err.message });
   }
-});
+};
 
-app.listen(PORT, () => {
-  console.log(`Palworld proxy backend running on port ${PORT}`);
-});
+const proxyPost = (path) => async (req, res) => {
+  try {
+    const r = await fetch(`${API_BASE}${path}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': AUTH,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(req.body)
+    });
+    const data = await r.json();
+    res.status(r.status).json(data);
+  } catch (err) {
+    console.error(`[POST ${path}] Error:`, err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+app.get('/api/info', proxyGet('/info'));
+app.get('/api/metrics', proxyGet('/metrics'));
+app.get('/api/players', proxyGet('/players'));
+app.post('/api/announce', proxyPost('/announce'));
+
+app.listen(PORT, () => console.log(`Palworld proxy backend running on port ${PORT}`));
