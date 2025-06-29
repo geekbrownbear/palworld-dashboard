@@ -4,7 +4,6 @@ require('dotenv').config();
 console.log('[DEBUG] PALWORLD_API:', process.env.PALWORLD_API);
 console.log('[DEBUG] PALWORLD_AUTH:', process.env.PALWORLD_AUTH);
 
-
 const app = express();
 const PORT = 3001;
 const API_BASE = process.env.PALWORLD_API; // expected to be http://<ip>:8212/v1/api
@@ -55,5 +54,9 @@ app.get('/info', proxyGet('/info'));
 app.get('/metrics', proxyGet('/metrics'));
 app.get('/players', proxyGet('/players'));
 app.post('/announce', proxyPost('/announce'));
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
 app.listen(PORT, () => console.log(`Palworld proxy backend running on port ${PORT}`));
