@@ -26,6 +26,7 @@ export default function PalworldDashboard() {
   const [info, setInfo] = useState(null);
   const [metrics, setMetrics] = useState(null);
   const [players, setPlayers] = useState([]);
+  const [server, setServer] = useState(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
@@ -54,21 +55,24 @@ export default function PalworldDashboard() {
 
   const fetchData = async () => {
     try {
-      const [infoRes, metricsRes, playersRes, healthRes] = await Promise.all([
+      const [infoRes, metricsRes, playersRes, serverRes, healthRes] = await Promise.all([
         fetch(`${API_BASE}/info`),
         fetch(`${API_BASE}/metrics`),
         fetch(`${API_BASE}/players`),
+        fetch(`${API_BASE}/server`),
         fetch(`${API_BASE}/health`)
       ]);
 
       const infoData = await infoRes.json();
       const metricsData = await metricsRes.json();
       const playersData = await playersRes.json();
+      const serverData = await serverRes.json();
       const healthData = await healthRes.json();
 
       setInfo(infoData);
       setMetrics(metricsData);
       setPlayers(Array.isArray(playersData) ? playersData : playersData.players || []);
+      setServer(serverData);
       setHealth(healthData?.status || "unhealthy");
       setLastUpdated(new Date().toLocaleTimeString());
       setError(null);
@@ -97,21 +101,15 @@ export default function PalworldDashboard() {
         body: JSON.stringify({ message })
       });
 
-	  if (!res.ok) {
-		let errText;
-		try {
-			errText = await res.text();
-		} catch {
-			errText = `HTTP ${res.status}`;
-		}
-		console.error("Announce failed:", errText);
-		setError("Announcement failed: " + errText);
-	  } else {
-		console.log("Announcement sent successfully.");
-		setMessage("");
-		setError(null);
-	}
-
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error("Announce failed:", errText);
+        setError("Announcement failed: " + errText);
+      } else {
+        console.log("Announcement sent successfully.");
+        setMessage("");
+        setError(null);
+      }
     } catch (err) {
       console.error("Announce error:", err);
       setError("Announcement error: " + err.message);
@@ -122,7 +120,7 @@ export default function PalworldDashboard() {
     fetchData();
     let interval;
     if (autoRefresh) {
-      interval = setInterval(fetchData, 10000);
+      interval = setInterval(fetchData, 30000);
     }
     return () => clearInterval(interval);
   }, [autoRefresh]);
@@ -178,7 +176,7 @@ export default function PalworldDashboard() {
               <ul>
                 <li><strong>Server FPS:</strong> <span className={metrics.serverfps < 30 ? "text-red-600" : "text-green-700"}>{metrics.serverfps}</span> (avg: {averages.fps})</li>
                 <li><strong>Players:</strong> {metrics.currentplayernum}/{metrics.maxplayernum} (avg: {averages.players})</li>
-                <li><strong>Uptime:</strong> {formatUptime(metrics.uptime)} (DD:HH:MM:SS)</li>
+                <li><strong>Uptime:</strong> {metrics.uptime} seconds ({formatUptime(metrics.uptime)})</li>
                 <li><strong>Frame Time:</strong> <span className={metrics.serverframetime > 25 ? "text-yellow-600" : "text-black"}>{metrics.serverframetime.toFixed(2)}ms</span></li>
                 <li><strong>In-game Days:</strong> {metrics.days}</li>
               </ul>
@@ -194,15 +192,15 @@ export default function PalworldDashboard() {
             {players.length > 0 ? (
               <ul className="space-y-1">
                 {players.map((p, idx) => (
-				  <li key={p.userId || idx} className="border p-2 rounded bg-gray-50">
-					<div className="font-semibold text-lg">{p.name} {p.level ? `(Level ${p.level})` : null}</div>
+                  <li key={p.userId || idx} className="border p-2 rounded bg-gray-50">
+                    <div className="font-semibold text-lg">{p.name} {p.level ? `(Level ${p.level})` : null}</div>
 					<div className="text-sm text-gray-700">Account: {p.accountName}</div>
 					/*<div className="text-sm text-gray-700">User ID: {p.userId} | Player ID: {p.playerId}</div>*/
 					<div className="text-sm text-gray-700">IP: {p.ip} | Ping: {p.ping.toFixed(2)}ms</div>
-					<div className="text-sm text-gray-700">Location: ({p.location_x}, {p.location_y})</div>
-					<div className="text-sm text-gray-700">Buildings Owned: {p.building_count}</div>
-				  </li>
-				))}
+                    <div className="text-sm text-gray-700">Location: ({p.location_x}, {p.location_y})</div>
+                    <div className="text-sm text-gray-700">Buildings Owned: {p.building_count}</div>
+                  </li>
+                ))}
               </ul>
             ) : (
               <p className="text-gray-500">No players online or data not available.</p>
@@ -221,6 +219,17 @@ export default function PalworldDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {server && (
+        <Card>
+          <CardContent>
+            <h2 className="text-xl font-bold mb-4">Server Settings</h2>
+            <pre className="overflow-x-auto text-sm bg-gray-100 p-4 rounded border border-gray-300 whitespace-pre-wrap">
+              {JSON.stringify(server, null, 2)}
+            </pre>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardContent>
