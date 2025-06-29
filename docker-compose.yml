@@ -9,6 +9,8 @@ services:
       - DATABASE_URL=postgresql://postgres:password@db:5432/palworld_dashboard
       - PALWORLD_API_URL=http://your-palworld-server:8212
       - PALWORLD_AUTH_TOKEN=YWRtaW46cGFzc3dvcmQ=
+    env_file:
+      - stack.env
     depends_on:
       - db
     restart: unless-stopped
@@ -19,6 +21,8 @@ services:
       - POSTGRES_DB=palworld_dashboard
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
+    env_file:
+      - stack.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
