@@ -51,9 +51,9 @@ const proxyPost = (path) => async (req, res) => {
   }
 };
 
-app.get('/api/info', proxyGet('/info'));
-app.get('/api/metrics', proxyGet('/metrics'));
-app.get('/api/players', proxyGet('/players'));
-app.post('/api/announce', proxyPost('/announce'));
+app.get('/info', proxyGet('/info'));
+app.get('/metrics', proxyGet('/metrics'));
+app.get('/players', proxyGet('/players'));
+app.post('/announce', proxyPost('/announce'));
 
 app.listen(PORT, () => console.log(`Palworld proxy backend running on port ${PORT}`));
