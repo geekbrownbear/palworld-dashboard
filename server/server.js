@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
+console.log('[DEBUG] PALWORLD_API:', process.env.PALWORLD_API);
+console.log('[DEBUG] PALWORLD_AUTH:', process.env.PALWORLD_AUTH);
+
 
 const app = express();
 const PORT = 3001;
