@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer
+} from "recharts";
 
 const Card = ({ children, className = "" }) => (
   <div className={`border rounded shadow p-4 bg-white ${className}`}>{children}</div>
@@ -22,6 +31,8 @@ export default function PalworldDashboard() {
   const [lastUpdated, setLastUpdated] = useState(null);
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [health, setHealth] = useState("unknown");
+  const [metricsHistory, setMetricsHistory] = useState([]);
+  const [averages, setAverages] = useState({ fps: null, players: null });
 
   const formatUptime = (seconds) => {
     const d = Math.floor(seconds / 86400);
@@ -29,6 +40,16 @@ export default function PalworldDashboard() {
     const m = Math.floor((seconds % 3600) / 60);
     const s = seconds % 60;
     return `${d.toString().padStart(2, '0')}:${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
+
+  const calculateAverages = (data) => {
+    if (data.length === 0) return;
+    const totalFPS = data.reduce((acc, cur) => acc + cur.fps, 0);
+    const totalPlayers = data.reduce((acc, cur) => acc + cur.players, 0);
+    setAverages({
+      fps: (totalFPS / data.length).toFixed(1),
+      players: (totalPlayers / data.length).toFixed(1)
+    });
   };
 
   const fetchData = async () => {
@@ -51,6 +72,15 @@ export default function PalworldDashboard() {
       setHealth(healthData?.status || "unhealthy");
       setLastUpdated(new Date().toLocaleTimeString());
       setError(null);
+
+      const updatedHistory = [...metricsHistory.slice(-49), {
+        time: new Date().toLocaleTimeString(),
+        fps: metricsData.serverfps,
+        players: metricsData.currentplayernum,
+        uptime: metricsData.uptime
+      }];
+      setMetricsHistory(updatedHistory);
+      calculateAverages(updatedHistory);
     } catch (err) {
       console.error("Failed to fetch data:", err);
       setError("Unable to fetch one or more data sources.");
@@ -140,10 +170,10 @@ export default function PalworldDashboard() {
             <h2 className="text-xl font-bold mb-2">Metrics</h2>
             {metrics ? (
               <ul>
-                <li><strong>Server FPS:</strong> {metrics.serverfps}</li>
-                <li><strong>Players:</strong> {metrics.currentplayernum}/{metrics.maxplayernum}</li>
+                <li><strong>Server FPS:</strong> <span className={metrics.serverfps < 30 ? "text-red-600" : "text-green-700"}>{metrics.serverfps}</span> (avg: {averages.fps})</li>
+                <li><strong>Players:</strong> {metrics.currentplayernum}/{metrics.maxplayernum} (avg: {averages.players})</li>
                 <li><strong>Uptime:</strong> {formatUptime(metrics.uptime)} (DD:HH:MM:SS)</li>
-                <li><strong>Frame Time:</strong> {metrics.serverframetime.toFixed(2)}ms</li>
+                <li><strong>Frame Time:</strong> <span className={metrics.serverframetime > 25 ? "text-yellow-600" : "text-black"}>{metrics.serverframetime.toFixed(2)}ms</span></li>
                 <li><strong>In-game Days:</strong> {metrics.days}</li>
               </ul>
             ) : (
@@ -180,6 +210,22 @@ export default function PalworldDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardContent>
+          <h2 className="text-xl font-bold mb-4">Performance History</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={metricsHistory}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="time" interval={4} />
+              <YAxis domain={[0, 'auto']} />
+              <Tooltip />
+              <Line type="monotone" dataKey="fps" stroke="#1d4ed8" name="FPS" />
+              <Line type="monotone" dataKey="players" stroke="#059669" name="Players" />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardContent>
