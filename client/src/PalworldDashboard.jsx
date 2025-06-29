@@ -59,7 +59,7 @@ export default function PalworldDashboard() {
         fetch(`${API_BASE}/info`),
         fetch(`${API_BASE}/metrics`),
         fetch(`${API_BASE}/players`),
-        fetch(`${API_BASE}/server`),
+        fetch(`${API_BASE}/settings`),
         fetch(`${API_BASE}/health`)
       ]);
 
