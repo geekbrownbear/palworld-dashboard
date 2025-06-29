@@ -142,7 +142,7 @@ export default function PalworldDashboard() {
               <ul>
                 <li><strong>Server FPS:</strong> {metrics.serverfps}</li>
                 <li><strong>Players:</strong> {metrics.currentplayernum}/{metrics.maxplayernum}</li>
-                <li><strong>Uptime:</strong> {metrics.uptime} seconds ({formatUptime(metrics.uptime)})</li>
+                <li><strong>Uptime:</strong> {formatUptime(metrics.uptime)} (DD:HH:MM:SS)</li>
                 <li><strong>Frame Time:</strong> {metrics.serverframetime.toFixed(2)}ms</li>
                 <li><strong>In-game Days:</strong> {metrics.days}</li>
               </ul>
