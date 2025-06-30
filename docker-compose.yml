@@ -1,31 +1,26 @@
 version: '3.8'
 
 services:
-  palworld-dashboard:
-    build: .
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
     ports:
-      - "3000:3000"
-    environment:
-      - DATABASE_URL=postgresql://postgres:password@db:5432/palworld_dashboard
-      - PALWORLD_API_URL=http://your-palworld-server:8212
-      - PALWORLD_AUTH_TOKEN=YWRtaW46cGFzc3dvcmQ=
-    env_file:
-      - stack.env
+      - "8090:80"
     depends_on:
-      - db
-    restart: unless-stopped
+      - backend
+    networks:
+      - palworld-net
 
-  db:
-    image: postgres:15-alpine
-    environment:
-      - POSTGRES_DB=palworld_dashboard
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
     env_file:
       - stack.env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: unless-stopped
+    networks:
+      - palworld-net
 
-volumes:
-  postgres_data:
+networks:
+  palworld-net:
+    driver: bridge
