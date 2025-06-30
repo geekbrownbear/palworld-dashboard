@@ -27,6 +27,7 @@ export default function PalworldDashboard() {
   const [metrics, setMetrics] = useState(null);
   const [players, setPlayers] = useState([]);
   const [message, setMessage] = useState("");
+  const [settings, setSettings] = useState(null);
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [autoRefresh, setAutoRefresh] = useState(true);
@@ -54,21 +55,24 @@ export default function PalworldDashboard() {
 
   const fetchData = async () => {
     try {
-      const [infoRes, metricsRes, playersRes, healthRes] = await Promise.all([
+      const [infoRes, metricsRes, playersRes, healthRes, settingsRes] = await Promise.all([
         fetch(`${API_BASE}/info`),
         fetch(`${API_BASE}/metrics`),
         fetch(`${API_BASE}/players`),
         fetch(`${API_BASE}/health`)
+		fetch(`${API_BASE}/settings`)
       ]);
 
       const infoData = await infoRes.json();
       const metricsData = await metricsRes.json();
       const playersData = await playersRes.json();
       const healthData = await healthRes.json();
+	  const settingsData = await settingsRes.json();
 
       setInfo(infoData);
       setMetrics(metricsData);
       setPlayers(Array.isArray(playersData) ? playersData : playersData.players || []);
+	  setSettings(settingsData);
       setHealth(healthData?.status || "unhealthy");
       setLastUpdated(new Date().toLocaleTimeString());
       setError(null);
@@ -220,6 +224,29 @@ export default function PalworldDashboard() {
             <Button onClick={announce}>Send Announcement</Button>
           </CardContent>
         </Card>
+		
+		<Card className="col-span-1 md:col-span-2">
+		  <CardContent>
+			<h2 className="text-xl font-bold mb-2">Server Settings</h2>
+			{settings ? (
+			  <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+				<li><strong>Difficulty:</strong> {settings.Difficulty}</li>
+				<li><strong>Daytime Speed Rate:</strong> {settings.DayTimeSpeedRate}</li>
+				<li><strong>Nighttime Speed Rate:</strong> {settings.NightTimeSpeedRate}</li>
+				<li><strong>Exp Rate:</strong> {settings.ExpRate}</li>
+				<li><strong>Pal Spawn Rate:</strong> {settings.PalSpawnNumRate}</li>
+				<li><strong>Enable PvP:</strong> {settings.bIsPvP ? "Yes" : "No"}</li>
+				<li><strong>Max Players:</strong> {settings.ServerPlayerMaxNum}</li>
+				<li><strong>Region:</strong> {settings.Region}</li>
+				<li><strong>Public IP:</strong> {settings.PublicIP}</li>
+				<li><strong>Port:</strong> {settings.PublicPort}</li>
+			  </ul>
+			) : (
+			  <p className="text-gray-500">No settings data available.</p>
+			)}
+		  </CardContent>
+	  </Card>
+
       </div>
 
       <Card>
