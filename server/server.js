@@ -69,6 +69,7 @@ const proxyPost = (path) => async (req, res) => {
 app.get('/info', proxyGet('/info'));
 app.get('/metrics', proxyGet('/metrics'));
 app.get('/players', proxyGet('/players'));
+app.get('/settings', proxyGet('/settings'));
 app.post('/announce', proxyPost('/announce'));
 
 app.get('/health', (req, res) => {
