@@ -24,7 +24,17 @@ const proxyGet = (path) => async (req, res) => {
         'Accept': 'application/json'
       }
     });
-    const data = await r.json();
+	const contentType = r.headers.get('content-type');
+	let data;
+
+	if (contentType && contentType.includes('application/json')) {
+	  data = await r.json();
+	} else {
+	  const text = await r.text();
+	  console.warn(`[GET ${req.params.endpoint}] Received non-JSON:`, text);
+	  res.status(r.status).send(text);
+	  return;
+	}
     res.status(r.status).json(data);
   } catch (err) {
     console.error(`[GET ${path}] Error:`, err);
