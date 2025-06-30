@@ -224,29 +224,6 @@ export default function PalworldDashboard() {
             <Button onClick={announce}>Send Announcement</Button>
           </CardContent>
         </Card>
-		
-		<Card className="col-span-1 md:col-span-2">
-		  <CardContent>
-			<h2 className="text-xl font-bold mb-2">Server Settings</h2>
-			  {settings ? (
-			  <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-				<li><strong>Difficulty:</strong> {settings.Difficulty}</li>
-				<li><strong>Daytime Speed Rate:</strong> {settings.DayTimeSpeedRate}</li>
-				<li><strong>Nighttime Speed Rate:</strong> {settings.NightTimeSpeedRate}</li>
-				<li><strong>Exp Rate:</strong> {settings.ExpRate}</li>
-				<li><strong>Pal Spawn Rate:</strong> {settings.PalSpawnNumRate}</li>
-				<li><strong>Enable PvP:</strong> {settings.bIsPvP ? "Yes" : "No"}</li>
-				<li><strong>Max Players:</strong> {settings.ServerPlayerMaxNum}</li>
-				<li><strong>Region:</strong> {settings.Region}</li>
-				<li><strong>Public IP:</strong> {settings.PublicIP}</li>
-				<li><strong>Port:</strong> {settings.PublicPort}</li>
-			  </ul>
-			  ) : (
-				  <p className="text-gray-500">No settings data available.</p>
-			  )}
-		  </CardContent>
-	  </Card>
-
       </div>
 
       <Card>
