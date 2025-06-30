@@ -237,9 +237,6 @@ export default function PalworldDashboard() {
 				<li><strong>Pal Spawn Rate:</strong> {settings.PalSpawnNumRate}</li>
 				<li><strong>Enable PvP:</strong> {settings.bIsPvP ? "Yes" : "No"}</li>
 				<li><strong>Max Players:</strong> {settings.ServerPlayerMaxNum}</li>
-				<li><strong>Region:</strong> {settings.Region}</li>
-				<li><strong>Public IP:</strong> {settings.PublicIP}</li>
-				<li><strong>Port:</strong> {settings.PublicPort}</li>
 			  </ul>
 			  ) : (
 				  <p className="text-gray-500">No settings data available.</p>
