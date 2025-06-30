@@ -238,5 +238,18 @@ export default function PalworldDashboard() {
         </CardContent>
       </Card>
     </div>
+	<footer style={{ backgroundColor: '#111', color: '#fff', textAlign: 'center', padding: '1rem' }}>
+  <p>
+    Built with ❤️ by{'an LLM lol'}
+    <a
+      href="https://github.com/geekbrownbear/palworld-dashboard"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: '#58a6ff', textDecoration: 'underline' }}
+    >
+      @GeekBrownBear
+    </a>
+  </p>
+</footer>
   );
 }
