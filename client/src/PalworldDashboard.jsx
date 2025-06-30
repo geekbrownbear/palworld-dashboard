@@ -237,14 +237,14 @@ export default function PalworldDashboard() {
           </ResponsiveContainer>
         </CardContent>
       </Card>
-
+/*
 	  <Card>
 		  <CardContent>
 			<h2 className="text-xl font-bold mb-4">API Explorer</h2>
 			<SwaggerUI url="/docs/openapi-schema.json" />
 		  </CardContent>
 	  </Card>
-
+*/
     </div>
   );
 }
